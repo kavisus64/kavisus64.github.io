@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <html>
-  <div> <h2>Happiness Score of Countries in 2021</h2>
+  
+  <div> <h2><center>Happiness Score of Countries in 2021</center></h2>
+    <center>
     <button onclick="location.href='/scene2.html'" type="button">
       GDP Per Capita</button>
+    <button onclick="location.href='/index.html'" type="button">
+      Home</button>
     <button onclick="location.href='/scene3.html'" type="button">
-       Life Expectancy</button>
-    
+      Life Expectancy</button>
+    </center>    
   </div>
 <script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 
 <!-- Create a div where the graph will take place -->
-<div id="my_dataviz"></div>
 
+
+<div id="my_dataviz" height=700 width=1800></div>
+  
 <style>
+  
 .node:hover{
   stroke-width: 7px !important;
   opacity: 1 !important;
@@ -35,11 +43,11 @@ var svg = d3.select("#my_dataviz")
 // Read data
 d3.csv("https://raw.githubusercontent.com/kavisus64/Narrative-Viz/master/world-happiness-report-2021.csv", function(data) {
 
-  // Filter a bit the data -> more than 1 million inhabitants
   //Country_name,Regional_indicator,Happiness_score
   // Color palette for continents?
+  var keys=["Western Europe", "North America and ANZ", "Middle East and North Africa", "Latin America and Caribbean", "Central and Eastern Europe","East Asia","Southeast Asia","Commonwealth of Independent States","South Asia","Sub-Saharan Africa"]
   var color = d3.scaleOrdinal()
-    .domain(["Western Europe", "North America and ANZ", "Middle East and North Africa", "Latin America and Caribbean", "Central and Eastern Europe","East Asia","Southeast Asia","Commonwealth of Independent States","South Asia","Sub-Saharan Africa"])
+    .domain(keys)
     .range(d3.schemeCategory10);
 
   // Size scale for countries
@@ -92,10 +100,11 @@ d3.csv("https://raw.githubusercontent.com/kavisus64/Narrative-Viz/master/world-h
       .on("mouseover", mouseover) // What to do when hovered
       .on("mousemove", mousemove)
       .on("mouseleave", mouseleave)
+      
       .call(d3.drag() // call specific function when circle is dragged
-           .on("start", dragstarted)
-           .on("drag", dragged)
-           .on("end", dragended));
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
 
   // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
@@ -129,16 +138,138 @@ d3.csv("https://raw.githubusercontent.com/kavisus64/Narrative-Viz/master/world-h
     d.fy = null;
   }
 
+
+
+
+
+//annotaion left
+
+const annotations = [
+  {
+    note: {
+      label: "Finland",
+      title: "Highest Happiness Score",
+      align: "middle",  // try right or left
+      wrap: 300,  // try something smaller to see text split in several lines
+      padding: 15
+    },
+    color:["Black"],
+    x: 656,
+    y: 240,
+    dy: 190,
+    dx: 250
+  }
+]
+
+// Add annotation to the chart
+const makeAnnotations = d3.annotation().annotations(annotations)
+d3.selectAll("svg").append("g").call(makeAnnotations)
+
+const annotationsRight = [
+{
+  note: {
+    label: "Afghanistan",
+    title: "Lowest Happiness Score",
+    align: "right",  // try right or left
+    wrap: 150,  // try something smaller to see text split in several lines
+    padding: 15
+  },
+  
+  color: ["black"],
+  x: 430,
+  y: 200,
+  dy: 0,
+  dx: 0,
+  
+}
+]
+
+// Add annotation to the chart
+const makeAnnotationsRight = d3.annotation().annotations(annotationsRight)
+d3.selectAll("svg").append("g").call(makeAnnotationsRight)
+
+
+
+//Annotaion on the left
+
+const annotationsleft= [
+{
+  note: {
+    label: "Regions",
+    align: "right",  // try right or left
+    wrap: 300,  // try something smaller to see text split in several lines
+    padding: 30
+  },
+  
+  color: ["purple"],
+    x: 1150,
+    y: 400,
+    dy: 40,
+    dx: 20
+  
+  
+}
+]
+
+// Add annotation to the chart
+const makeAnnotationsleft = d3.annotation().annotations(annotationsleft)
+d3.selectAll("svg").append("g").call(makeAnnotationsleft)
+
+
+//color codes
+    // select the svg area
+    var SVG = d3.select("svg")
+    
+    // create a list of keys
+    var keys=["Western Europe", "North America and ANZ", "Middle East and North Africa", "Latin America and Caribbean", "Central and Eastern Europe","East Asia","Southeast Asia","Commonwealth of Independent States","South Asia","Sub-Saharan Africa"]
+  var color = d3.scaleOrdinal()
+    .domain(keys)
+    .range(d3.schemeCategory10);
+    
+    // Add one dot in the legend for each name.
+    var size = 11
+    SVG.selectAll("mydots")
+      .data(keys)
+      .enter()
+      .append("rect")
+        .attr("x", 1100)
+        .attr("y", function(d,i){ return 240 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("width", size)
+        .attr("height", size)
+        .style("fill", function(d){ return color(d)})
+    
+    // Add one dot in the legend for each name.
+    SVG.selectAll("mylabels")
+      .data(keys)
+      .enter()
+      .append("text")
+        .attr("x", 1110 + size)
+        .attr("y", function(d,i){ return 240 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .style("fill", function(d){ return color(d)}  )
+        .style("font", "14px times")
+        .text(function(d){ return d})
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle")
+
+
+
+
+
 })
-svg.append("g").append("text").attr("id","annotation").transition().duration(1000).attr("x", 210).attr("y", -30)
-	.text("Cases by Counties for the selected state in descending order").attr("font-size", "14px").attr("fill", "black").attr("font-weight","bold")
 
 </script>
+
+
 <body>
-
-
-<p id="demo">A Paragraph.</p>
-
-
+  <p align="right", style="color:red;font-size:15px;">*Hover for more details</p>
+<p ALIGN="justify";style="color:black;font-size:20px;">The World Happiness Report is a landmark survey of the state of global happiness .The World Happiness 2021, which ranks 155 countries by their happiness levels, was released at the United Nations.
+  The report describes how measurements of well-being can be used effectively to assess the progress of nations.
+   The reports review the state of happiness in the world today and show how the new science of happiness explains personal and national variations in happiness.
+  The following columns: GDP per Capita, Family, Life Expectancy, Freedom, Generosity, Trust Government Corruption describe the extent to which these factors contribute in evaluating the happiness in each country.<br><br>
+  The happiness scores and rankings use data from the Gallup World Poll. The scores are based on answers to the main life evaluation question asked in the poll. 
+  This question, known as the Cantril ladder, asks respondents to think of a ladder with the best possible life for them being a 10 and the worst possible life being a 0 and to rate their own current lives on that scale. 
+  The scores are from nationally representative samples for the years 2013-2020 and use the Gallup weights to make the estimates representative. The columns following the happiness score estimate the extent to which each of six factors – economic production, social support, life expectancy, freedom, absence of corruption, and generosity – contribute to making life evaluations higher in each country than they are in Dystopia, a hypothetical country that has values equal to the world’s lowest national averages for each of the six factors. 
+  They have no impact on the total score reported for each country, but they do explain why some countries rank higher than others.
+  </p>
 </body>
 </html> 
