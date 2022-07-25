@@ -90,7 +90,7 @@
         .style("border-width", "1px")
         .style("border-radius", "5px")
         .style("padding", "10px")
-        .style('font-size', '10px')
+        .style('font-size', '15px')
     
     
     
@@ -163,6 +163,10 @@
       console.log("d: " + selectedOption);
       //d3.select("svg").selectAll("circle");
       d3.select("#my_dataviz").select("svg").selectAll("circle").remove()
+      annotate_lower=d3.select("#my_dataviz").select("svg").selectAll(".annotationlowest")
+      annotate_lower.style("opacity", 0)
+      annotationhigest=d3.select("#my_dataviz").select("svg").selectAll(".annotationhigest")
+      annotationhigest.style("opacity", 0)
       // run the updateChart function with this selected option
       update(selectedOption)
 
@@ -189,6 +193,9 @@
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .text("GDP per capita "); 
+
+//annotation hover
+
       
       //annotaion right
 
@@ -209,7 +216,7 @@ const annotations = [
 ]
 // Add annotation  left to the chart
 const makeAnnotations = d3.annotation().annotations(annotations)
-d3.selectAll("svg").append("g").style('font-size', 15).call(makeAnnotations)
+d3.selectAll("svg").append("g").style('font-size', 15).attr("class", "annotationhigest").call(makeAnnotations)
 
 
 const annotationsRight = [
@@ -231,7 +238,7 @@ const annotationsRight = [
 ]
 // Add annotation to the chart
 const makeAnnotationsRight = d3.annotation().annotations(annotationsRight)
-d3.selectAll("svg").append("g").style('font-size', 15).call(makeAnnotationsRight)
+d3.selectAll("svg").append("g").style('font-size', 15).attr("class", "annotationlowest").call(makeAnnotationsRight)
 
 //Annotaion on the region
 
@@ -256,6 +263,29 @@ const annotationsleft= [
 // Add annotation to the chart
 const makeAnnotationsleft = d3.annotation().annotations(annotationsleft)
 d3.selectAll("svg").append("g").call(makeAnnotationsleft)
+
+//annotaion hover
+const annotationshover= [
+{
+  note: {
+    label: "* Hover over the dots for more details",
+    align: "left",  // try right or left
+    wrap: 400,  // try something smaller to see text split in several lines
+    padding: 0
+  },
+  
+  color: ["red"],
+    x: 200,
+    y: 40,
+    dy: -1,
+    dx: 0
+  
+}
+]
+
+// Add annotation to the chart
+const makeAnnotationshover= d3.annotation().annotations(annotationshover)
+d3.selectAll("svg").append("g").call(makeAnnotationshover)
 
 var SVG = d3.select("svg")
     

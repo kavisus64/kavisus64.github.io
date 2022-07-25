@@ -215,6 +215,29 @@ const annotationsleft= [
 const makeAnnotationsleft = d3.annotation().annotations(annotationsleft)
 d3.selectAll("svg").append("g").call(makeAnnotationsleft)
 
+//annotaion hover
+const annotationshover= [
+{
+  note: {
+    label: "* Hover over the dots for more details",
+    align: "left",  // try right or left
+    wrap: 400,  // try something smaller to see text split in several lines
+    padding: 0
+  },
+  
+  color: ["red"],
+    x: 200,
+    y: 40,
+    dy: -1,
+    dx: 0
+  
+}
+]
+
+// Add annotation to the chart
+const makeAnnotationshover= d3.annotation().annotations(annotationshover)
+d3.selectAll("svg").append("g").call(makeAnnotationshover)
+
 
 //color codes
     // select the svg area
@@ -261,7 +284,6 @@ d3.selectAll("svg").append("g").call(makeAnnotationsleft)
 
 
 <body>
-  <p align="right", style="color:red;font-size:15px;">*Hover for more details</p>
 <p ALIGN="justify";style="color:black;font-size:20px;">The World Happiness Report is a landmark survey of the state of global happiness .The World Happiness 2021, which ranks 155 countries by their happiness levels, was released at the United Nations.
   The report describes how measurements of well-being can be used effectively to assess the progress of nations.
    The reports review the state of happiness in the world today and show how the new science of happiness explains personal and national variations in happiness.
