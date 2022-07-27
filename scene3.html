@@ -157,7 +157,9 @@
    .attr('text-anchor', 'middle')
    .attr("class", "myLabel")//easy to style with CSS
    .text("Selected Region: "+ selectedGroup)
+   .attr("class", "selected_text")
    .style("fill", "darkred");
+
       
   
   
@@ -174,6 +176,8 @@
       annotate_lower.style("opacity", 0)
       annotationhigest=d3.select("#my_dataviz").select("svg").selectAll(".annotationhigest")
       annotationhigest.style("opacity", 0)
+      selected_text=d3.select("#my_dataviz").select("svg").selectAll(".selected_text")
+      selected_text.style("opacity", 0)
       // run the updateChart function with this selected option
       update(selectedOption)
 
@@ -209,7 +213,7 @@ const annotations = [
       wrap: 100,  // try something smaller to see text split in several lines
       padding: 15
     },
-    color:["darkblue"],
+    color:["Black"],
     x: 1335,
     y: 123,
     dy: 100,
@@ -230,7 +234,7 @@ const annotationsRight = [
     padding: 5
   },
   
-  color: ["darkblue"],
+  color: ["black"],
   x: 170,
   y: 375,
   dy: 10,
