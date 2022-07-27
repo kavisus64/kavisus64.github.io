@@ -6,13 +6,13 @@
     <div class="btn-group">
     <left> <select id="selectButton"></select></left>
     <center>
-    <button onclick="location.href='/scene2.html'" type="button">
-      GDP Per Capita</button>
-    <button onclick="location.href='/index.html'" type="button">
+      <button onclick="location.href='/index.html'" type="button">
       Home</button>
+    <button onclick="location.href='/scene2.html'" type="button">
+      GDP Per Capita vs Happiness Score</button>
     <button onclick="location.href='/scene3.html'" type="button">
-      Life Expectancy</button>
-    </center>    
+      Life Expectancyvs Happiness Score</button>
+    </center>   
     </div>
   </div>
 <script src="https://d3js.org/d3.v4.js"></script>
@@ -152,7 +152,15 @@
       .on("mouseover", mouseover )
       .on("mousemove", mousemove )
       .on("mouseleave", mouseleave )
-  
+
+      var myText =  svg.append("text")
+   .attr("y",50)//magic number here
+   .attr("x", 600)
+   .attr('text-anchor', 'middle')
+   .attr("class", "myLabel")//easy to style with CSS
+   .text("Selected Region: "+ selectedGroup)
+   .style("fill", "darkred");
+      
   
       
   }
@@ -207,7 +215,7 @@ const annotations = [
       wrap: 100,  // try something smaller to see text split in several lines
       padding: 15
     },
-    color:["Black"],
+    color:["darkblue"],
     x: 1330,
     y: 108,
     dy: 90,
@@ -228,7 +236,7 @@ const annotationsRight = [
     padding: 5
   },
   
-  color: ["black"],
+  color: ["darkblue"],
   x: 170,
   y: 345,
   dy: 10,
@@ -275,8 +283,8 @@ const annotationshover= [
   },
   
   color: ["red"],
-    x: 200,
-    y: 40,
+    x: 1000,
+    y: 460,
     dy: -1,
     dx: 0
   
@@ -285,7 +293,31 @@ const annotationshover= [
 
 // Add annotation to the chart
 const makeAnnotationshover= d3.annotation().annotations(annotationshover)
-d3.selectAll("svg").append("g").call(makeAnnotationshover)
+d3.selectAll("svg").append("g").call(makeAnnotationshover).style('font-size', 18)
+
+
+//annotaion drop
+const annotationsdrop= [
+{
+  note: {
+    label: "Select a region ",
+    align: "left",  // try right or left
+    wrap: 400,  // try something smaller to see text split in several lines
+    padding: 0
+  },
+  
+  color: ["red"],
+    x: 80,
+    y: 0,
+    dy: 10,
+    dx: 0
+  
+}
+]
+
+// Add annotation to the chart
+const makeAnnotationsdrop= d3.annotation().annotations(annotationsdrop)
+d3.selectAll("svg").append("g").call(makeAnnotationsdrop).style('font-size', 18)
 
 var SVG = d3.select("svg")
     
@@ -302,7 +334,7 @@ var SVG = d3.select("svg")
       .enter()
       .append("rect")
         .attr("x", 1100)
-        .attr("y", function(d,i){ return 330 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("y", function(d,i){ return 300 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
         .attr("width", size)
         .attr("height", size)
         .style("fill", function(d){ return colors(d)})
@@ -314,7 +346,7 @@ var SVG = d3.select("svg")
       .enter()
       .append("text")
         .attr("x", 1110 + size)
-        .attr("y", function(d,i){ return 330 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("y", function(d,i){ return 300 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
         .style("fill", function(d){ return colors(d)}  )
         .style("font", "14px times")
         .text(function(d){ return d})
